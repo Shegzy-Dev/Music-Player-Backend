@@ -86,11 +86,12 @@ music-app-backend/
 
 ### 🎵 Songs
 
-| Method | Endpoint              | Body                                               | Description                       |
-| ------ | --------------------- | -------------------------------------------------- | --------------------------------- |
-| GET    | `/api/songs`          | –                                                  | Get all songs                     |
-| POST   | `/api/songs`          | FormData: `{ title, artist, duration, audioFile }` | Upload a new song (requires auth) |
-| POST   | `/api/songs/:id/like` | –                                                  | Like a song (requires auth)       |
+| Method | Endpoint                 | Body                                               | Description                       |
+| ------ | ------------------------ | -------------------------------------------------- | --------------------------------- |
+| GET    | `/api/songs`             | –                                                  | Get all songs                     |
+| POST   | `/api/songs`             | FormData: `{ title, artist, duration, audioFile }` | Upload a new song (requires auth) |
+| POST   | `/api/songs/:id/like`    | –                                                  | Like a song (requires auth)       |
+| POST   | `/api/songs/:id/comment` | FormData: `{text}`                                 | Comment on a song (requires auth) |
 
 ### 📂 Playlists
 
