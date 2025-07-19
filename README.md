@@ -9,7 +9,7 @@ You can hook this up to any frontend (for example, the HTML frontend we built ea
 ## ✨ What's New – DevOps Ready!
 
 - ✅ **Dockerized** – runs anywhere with a single command
-- ✅ **Deployed on a Cloud VM** (Oracle Cloud Free Tier or similar)
+- ✅ **Deployed on a Cloud VM** (AWS Free Tier)
 - ✅ **Automated CI/CD** – GitHub Actions builds & deploys on every push
 
 ---

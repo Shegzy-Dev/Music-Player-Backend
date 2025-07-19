@@ -41,8 +41,8 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:latest
 
             # Stop old container if running
-            sudo docker stop music-player
-            sudo docker rm music-player
+            sudo docker stop ${{vars.CONTAINER_NAME}} || true
+            sudo docker rm ${{vars.CONTAINER_NAME}} || true
 
             # Run new container
             sudo docker run -d -p 80:5000 --name ${{vars.CONTAINER_NAME}} -e MONGO_URI="${{ secrets.MONGO_URI }}" -e JWT_SECRET="${{ secrets.JWT_SECRET }}" -e PORT="${{secrets.PORT}}" ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:latest
