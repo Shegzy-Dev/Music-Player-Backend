@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ['main'] # or your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # 2. Set up Docker Buildx
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # 3. Log in to Docker Hub
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      # 4. Build the image
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest .
+
+      # 5. Push to Docker Hub
+      - name: Push image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest
+
+      # 6. Deploy to VM via SSH
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            # Pull the new image
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest
+
+            # Stop old container if running
+            sudo docker stop music-player || true
+            sudo docker rm music-player || true
+
+            # Run new container
+            sudo docker run -d -p 80:5000 --name music-player ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest
