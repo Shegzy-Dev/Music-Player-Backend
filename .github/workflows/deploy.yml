@@ -31,18 +31,13 @@ jobs:
 
       # 6. Deploy to VM via SSH
       - name: SSH and Deploy
-        uses: appleboy/ssh-action@v0.1.10
+        uses: shegzy-dev/deploy-docker-vm@v1
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          script: |
-            # Pull the new image
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:latest
-
-            # Stop old container if running
-            sudo docker stop ${{vars.CONTAINER_NAME}} || true
-            sudo docker rm ${{vars.CONTAINER_NAME}} || true
-
-            # Run new container
-            sudo docker run -d -p 80:5000 --name ${{vars.CONTAINER_NAME}} -e MONGO_URI="${{ secrets.MONGO_URI }}" -e JWT_SECRET="${{ secrets.JWT_SECRET }}" -e PORT="${{secrets.PORT}}" ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:latest
+          container_name: ${{ vars.CONTAINER_NAME }}
+          image_name: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.PROJECT_NAME }}:latest
+          app_port: ${{ secrets.PORT }}
+          env_mongo: ${{ secrets.MONGO_URI }}
+          env_jwt: ${{ secrets.JWT_SECRET }}
