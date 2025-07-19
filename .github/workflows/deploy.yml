@@ -25,6 +25,9 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest .
 
+      - name: Tag Docker image
+        run: docker tag music-player-backend ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest
+
       # 5. Push to Docker Hub
       - name: Push image to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/music-player-backend:latest
