@@ -156,4 +156,4 @@ curl -X POST http://localhost:5000/api/songs \
 
 ## 📜 License
 
-MIT © 2025 Your Name
+MIT © 2025 Shegzy-Dev
